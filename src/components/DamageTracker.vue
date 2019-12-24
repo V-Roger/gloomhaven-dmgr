@@ -1,12 +1,12 @@
 <template>
-  <div class="damage-tracker p-4 rounded flex flex-col w-1/4">
-    <div class="bg-gray-900 w-full h-full p-12 flex flex-wrap justify-center">
+  <div class="damage-tracker p-4 flex flex-col w-1/4">
+    <div class="bg-gray-900 rounded-t w-full h-full p-12 flex flex-wrap justify-center">
       <h3 class="w-full flex justify-center">
         {{ foe.id }}
       </h3>
       <b>{{ foe.health }}/{{ foe.maxHealth }}</b>
     </div>
-    <footer :class="foe.type === 'elite' ? 'bg-yellow-600' : 'bg-white'" class="flex flew-row p-4 justify-around">
+    <footer :class="foe.type === 'elite' ? 'bg-yellow-600' : 'bg-white'" class="flex flew-row p-4 justify-around rounded-b">
       <button class="rounded-full h-16 w-16 flex items-center justify-center bg-gray-900" @click="damage">
         💥
       </button>
