@@ -35,7 +35,7 @@ export default class FoeCreator extends Vue {
   private health: number = 10
   private type: string = ''
   private isElite: boolean = false
-  private list: [] = foes.types
+  private list: {}[] = foes.types
   private number: number = 1
 
   addFoe(): void {
