@@ -1,17 +1,32 @@
 <template>
   <div class="damage-tracker p-4 flex flex-col w-1/4">
-    <div class="bg-gray-900 rounded-t w-full h-full p-12 flex flex-wrap justify-center">
-      <h3 class="w-full flex justify-center">
-        {{ foe.id }}
+    <div class="foe-card rounded-t w-full h-full p-24 flex flex-wrap">
+      <img :src="`./img/foes/${foe.type.id}.jpg`" class="foe-img rounded-t"/>
+      <p class="number text-2xl font-bold bg-gray-900 w-12 h-12 rounded-full text-center pt-1 font-sans">
+        {{ foe.number }}
+      </p>
+      <h3 class="w-full flex justify-center text-lg font-bold">
+        {{ foe.type.name }}
       </h3>
-      <b>{{ foe.health }}/{{ foe.maxHealth }}</b>
+      <ul class="conditions">
+        <li v-for="condition in foe.conditions" v-bind:key="condition">
+          <i class="fad text-2xl font-bold bg-gray-900 w-12 h-12 rounded-full text-center pt-3 mt-2" :class="conditionClass(condition)" />
+        </li>
+      </ul>
+      <b class="health font-mono">{{ foe.health }}/{{ foe.maxHealth }}</b>
     </div>
-    <footer :class="foe.type === 'elite' ? 'bg-yellow-600' : 'bg-white'" class="flex flew-row p-4 justify-around rounded-b">
-      <button class="rounded-full h-16 w-16 flex items-center justify-center bg-gray-900" @click="damage">
-        💥
+    <div class="healthbar w-full h-4 bg-black">
+      <div class="healthbar-gauge" :style="{ width: foe.health / foe.maxHealth * 100 + '%' }"></div>
+    </div>
+    <footer :class="foe.rank === 'elite' ? 'bg-yellow-600' : 'bg-white'" class="flex flew-row p-4 px-2 justify-around rounded-b">
+      <button class="rounded-full h-16 w-16 text-3xl flex items-center justify-center bg-gray-900" @click="damage">
+        <i class="fad fa-claw-marks text-red-500"/>
       </button>
-      <button class="rounded-full h-16 w-16 flex items-center justify-center bg-gray-900" @click="heal">
-        💚
+      <button class="rounded-full h-16 w-16 text-3xl flex items-center justify-center bg-gray-900" @click="heal">
+        <i class="fad fa-heart text-green-500"/>
+      </button>
+      <button class="rounded-full h-16 w-16 text-3xl flex items-center justify-center bg-gray-900" @click="heal">
+        <i class="fad fa-star-of-life text-yellow-500"/>
       </button>
     </footer>
   </div>
@@ -34,9 +49,70 @@ export default class DamageTracker extends Vue {
   heal() {
     this.foe.heal(1)
   }
+
+  conditionClass(condition: string) {
+    switch(condition) {
+      case 'poisoned':
+        return 'fa-flask-poison'
+      case 'muddled':
+        return 'fa-question'
+      case 'immobilized':
+        return 'fa-bone-break'
+      case 'disarmed':
+        return 'fa-swords'
+      case 'stunned':
+        return 'fa-sun'
+      case 'ablaze':
+        return 'fa-fire-alt'
+    }
+  }
 }
 </script>
 
-<style>
+<style scoped lang="scss">
+.damage-tracker  {
+  position: relative;
+  z-index: 1;
 
+  .healthbar-gauge {
+    height: 100%;
+    background: #de3618;
+    transition: width 60ms ease-in;
+  }
+
+  .foe-card {
+    position: relative;
+
+    & .number {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+    }
+
+    & .conditions {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+    }
+
+    & .health {
+      position: absolute;
+      bottom: 4px;
+      right: 8px;
+    }
+  }
+
+
+  .foe-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+  }
+}
 </style>

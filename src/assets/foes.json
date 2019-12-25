@@ -1,0 +1,12 @@
+{
+  "types": [
+    {
+      "id": 1,
+      "name": "Bandit Guard"
+    },
+    {
+      "id": 2,
+      "name": "Bandit Archer"
+    }
+  ]
+}
