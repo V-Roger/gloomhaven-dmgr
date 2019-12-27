@@ -1,5 +1,9 @@
 <template>
   <section class="damage-manager container mx-auto px-24 flex flex-col flex-no-wrap">
+    <aside class="turn-counter fixed">
+      <i class="absolute fad fa-certificate"/>
+      <h3 class="font-mono text-black font-bold">{{ currentTurn }}</h3>
+    </aside>
     <header class="mx-auto mb-16 px-8 flex justify-center bg-gray-800 rounded-full shadow">
       <button class="btn" @click="addFoe">
         <i class="text-4xl hover:text-gray-400 fad fa-plus-square"/>
@@ -12,9 +16,11 @@
       </button>
     </header>
     <main class="flex flex-row flex-wrap">
-      <damage-tracker v-for="foe in foes" v-bind:key="foe.id" :foe="foe" @death="die(foe)"/>
+      <transition-group class="w-full flex flex-row flex-wrap" name="fadeInUp" tag="div">
+        <damage-tracker v-for="foe in foes" v-bind:key="foe.id" :foe="foe" @death="die(foe)"/>
+      </transition-group>
       <transition name="slideUp">
-        <foe-creator class="absolute z-10" v-if="isCreatingFoe" @createdFoe="addedFoe"/>
+        <foe-creator class="fixed z-10" v-if="isCreatingFoe" @createdFoe="addedFoe"/>
       </transition>
     </main>
   </section>
@@ -35,6 +41,7 @@ import Foe from '@/models/Foe'
 export default class DamageManager extends Vue {
   private foes: Foe[] = []
   private isCreatingFoe = false
+  private currentTurn: number = 1
 
   addFoe(): void {
     this.isCreatingFoe = true
@@ -52,11 +59,12 @@ export default class DamageManager extends Vue {
 
   endOfTurn(): void {
     this.foes.forEach(foe => foe.endOfTurn())
+    this.currentTurn++
   }
 }
 </script>
 
-<style>
+<style lang="scss">
   .btn {
     @apply font-bold py-2 px-4 rounded;
   }
@@ -76,5 +84,34 @@ export default class DamageManager extends Vue {
   
   .slideUp-enter, .slideUp-leave-to /* .fade-leave-active below version 2.1.8 */ {
     bottom: -200px;
+  }
+
+  .fadeInUp-enter-active, .fadeInUp-leave-active {
+    transition: all 80ms ease-in;
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  .fadeInUp-enter, .fadeInUp-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  .turn-counter {
+    width: 12rem;
+    text-align: center;
+    top: 4rem;
+    right: 12rem;
+
+    & i {
+      font-size: 12rem;
+    }
+
+    & h3 {
+      position: relative;
+      font-size: 4rem;
+      left: 6rem;
+      top: 3.4rem;
+    }
   }
 </style>

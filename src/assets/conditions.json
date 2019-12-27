@@ -1,0 +1,10 @@
+{
+  "conditions": [
+    "poisoned",
+    "muddled",
+    "immobilized",
+    "disarmed",
+    "stunned",
+    "ablaze"
+  ]
+}

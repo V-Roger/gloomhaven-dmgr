@@ -33,10 +33,15 @@ import * as foes from '@/assets/foes.json';
 @Component
 export default class FoeCreator extends Vue {
   private health: number = 10
-  private type: string = ''
+  private type: {}
   private isElite: boolean = false
   private list: {}[] = foes.types
   private number: number = 1
+
+  constructor() {
+    super()
+    this.type = this.list[0]
+  }
 
   addFoe(): void {
     this.$emit('createdFoe', new Foe(uniqid(), this.health, this.isElite ? 'elite' : 'normal', this.type, this.number))

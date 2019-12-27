@@ -18,16 +18,21 @@
     <div class="healthbar w-full h-4 bg-black">
       <div class="healthbar-gauge" :style="{ width: foe.health / foe.maxHealth * 100 + '%' }"></div>
     </div>
-    <footer :class="foe.rank === 'elite' ? 'bg-yellow-600' : 'bg-white'" class="flex flew-row p-4 px-2 justify-around rounded-b">
+    <footer :class="footerClass" class="flex flew-row flex-wrap p-4 px-2 justify-around rounded-b">
       <button class="rounded-full h-16 w-16 text-3xl flex items-center justify-center bg-gray-900" @click="damage">
         <i class="fad fa-claw-marks text-red-500"/>
       </button>
       <button class="rounded-full h-16 w-16 text-3xl flex items-center justify-center bg-gray-900" @click="heal">
         <i class="fad fa-heart text-green-500"/>
       </button>
-      <button class="rounded-full h-16 w-16 text-3xl flex items-center justify-center bg-gray-900" @click="heal">
-        <i class="fad fa-star-of-life text-yellow-500"/>
+      <button class="rounded-full h-16 w-16 text-3xl flex items-center justify-center bg-gray-900" @click="isAddingCondition = !isAddingCondition">
+        <i class="fad fa-star-christmas text-yellow-500"/>
       </button>
+      <ul v-if="isAddingCondition" class="condition-switcher z-10 w-full flex flex-row flex-wrap justify-center">
+        <li v-for="condition in conditions" v-bind:key="condition" class="p-2">
+          <i class="fad text-2xl font-bold bg-gray-900 w-12 h-12 rounded-full text-center pt-3 mt-2 hover:bg-red-900" :class="conditionClass(condition)" @click="addCondition(condition)"/>
+        </li>
+      </ul>
     </footer>
   </div>
 </template>
@@ -35,10 +40,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Foe from '@/models/Foe';
+import * as conditionsList from '@/assets/conditions.json'
 
 @Component
 export default class DamageTracker extends Vue {
   @Prop() private foe!: Foe
+  private isAddingCondition: boolean = false
+  private conditions: string[] = conditionsList.conditions
 
   damage() {
     this.foe.suffer(1).then(death => {
@@ -48,6 +56,19 @@ export default class DamageTracker extends Vue {
 
   heal() {
     this.foe.heal(1)
+  }
+
+  addCondition(condition: string) {
+    this.foe.addCondition(condition)
+    this.isAddingCondition = false
+  }
+
+  get footerClass (): string {
+    let className = this.foe.rank === 'elite' ? 'bg-yellow-600' : 'bg-white'
+    if (this.isAddingCondition) {
+      className = `${className} full-height`
+    }
+    return className
   }
 
   conditionClass(condition: string) {
@@ -102,7 +123,6 @@ export default class DamageTracker extends Vue {
     }
   }
 
-
   .foe-img {
     position: absolute;
     top: 0;
@@ -113,6 +133,16 @@ export default class DamageTracker extends Vue {
     width: 100%;
     max-height: 100%;
     object-fit: cover;
+  }
+
+  footer {
+    &.full-height {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+    }
   }
 }
 </style>
