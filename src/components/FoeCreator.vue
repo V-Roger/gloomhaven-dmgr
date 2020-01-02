@@ -6,7 +6,7 @@
     </div>
     <div class="form-group">
       <label for="type" class="text-lg mb-4">Type</label>
-      <v-select v-model="type" class="bg-white rounded w-64" :options="list" label="name"></v-select>
+      <v-select v-model="type" class="bg-white rounded w-64 text-gray-900" :options="list" label="name"></v-select>
     </div>
     <div class="form-group">
       <label for="number" class="text-lg mb-4">Numéro</label>

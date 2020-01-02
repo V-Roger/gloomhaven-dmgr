@@ -7,6 +7,42 @@
     {
       "id": 2,
       "name": "Bandit Archer"
+    },
+    {
+      "id": 3,
+      "name": "City Guard"
+    },
+    {
+      "id": 4,
+      "name": "City Archer"
+    },
+    {
+      "id": 5,
+      "name": "Inox Guard"
+    },
+    {
+      "id": 6,
+      "name": "Inox Archer"
+    },
+    {
+      "id": 7,
+      "name": "Inox Shaman"
+    },
+    {
+      "id": 8,
+      "name": "Vermling Scout"
+    },
+    {
+      "id": 9,
+      "name": "Vermling Shaman"
+    },
+    {
+      "id": 10,
+      "name": "Living Bones"
+    },
+    {
+      "id": 11,
+      "name": "Living Corpse"
     }
   ]
 }

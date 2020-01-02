@@ -2,7 +2,7 @@
   <div class="damage-tracker p-4 flex flex-col w-1/4">
     <div class="foe-card rounded-t w-full h-full p-24 flex flex-wrap">
       <img :src="`./img/foes/${foe.type.id}.jpg`" class="foe-img rounded-t"/>
-      <p class="number text-2xl font-bold bg-gray-900 w-12 h-12 rounded-full text-center pt-1 font-sans">
+      <p class="number text-2xl font-bold bg-gray-900 w-12 h-12 rounded-full text-center font-sans">
         {{ foe.number }}
       </p>
       <h3 class="w-full flex justify-center text-lg font-bold">
@@ -108,6 +108,7 @@ export default class DamageTracker extends Vue {
       position: absolute;
       top: 8px;
       right: 8px;
+      padding-top: 6px;
     }
 
     & .conditions {
