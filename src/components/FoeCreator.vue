@@ -1,10 +1,6 @@
 <template>
   <section class="foe-creator fixed bottom-0 left-0 right-0 bg-gray-900 p-24 flex justify-around">
     <div class="form-group">
-      <label for="health" class="text-lg mb-4"><b>{{ health }}</b> PV</label>
-      <input type="range" id="health" name="health" min="1" max="20" v-model="health">
-    </div>
-    <div class="form-group">
       <label for="type" class="text-lg mb-4">Type</label>
       <v-select v-model="type" class="bg-white rounded w-64 text-gray-900" :options="list" label="name"></v-select>
     </div>
@@ -30,12 +26,15 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 import Foe from '@/models/Foe'
 import * as foes from '@/assets/foes.json';
 
-@Component
+@Component({
+  props: {
+    lvl: Number
+  }
+})
 export default class FoeCreator extends Vue {
-  private health: number = 10
   private type: {}
   private isElite: boolean = false
-  private list: {}[] = foes.types
+  private list: any[] = foes.types
   private number: number = 1
 
   constructor() {
@@ -44,7 +43,11 @@ export default class FoeCreator extends Vue {
   }
 
   addFoe(): void {
-    this.$emit('createdFoe', new Foe(uniqid(), this.health, this.isElite ? 'elite' : 'normal', this.type, this.number))
+    this.$emit('createdFoe', new Foe(uniqid(), this.getHealthForLvl(this.type), this.isElite ? 'elite' : 'normal', this.type, this.number))
+  }
+
+  private getHealthForLvl(type: any) {
+    return type.health[this.lvl]
   }
 }
 </script>

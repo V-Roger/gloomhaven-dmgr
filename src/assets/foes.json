@@ -2,43 +2,93 @@
   "types": [
     {
       "id": 1,
-      "name": "Bandit Guard"
+      "name": "Bandit Guard",
+      "health": {
+        "1": 6,
+        "2": 8,
+        "3": 10
+      }
     },
     {
       "id": 2,
-      "name": "Bandit Archer"
+      "name": "Bandit Archer",
+      "health": {
+        "1": 6,
+        "2": 8,
+        "3": 10
+      }
     },
     {
       "id": 3,
-      "name": "City Guard"
+      "name": "City Guard",
+      "health": {
+        "1": 6,
+        "2": 8,
+        "3": 10
+      }
     },
     {
       "id": 4,
-      "name": "City Archer"
+      "name": "City Archer",
+      "health": {
+        "1": 6,
+        "2": 8,
+        "3": 10
+      }
     },
     {
       "id": 5,
-      "name": "Inox Guard"
+      "name": "Inox Guard",
+      "health": {
+        "1": 6,
+        "2": 8,
+        "3": 10
+      }
     },
     {
       "id": 6,
-      "name": "Inox Archer"
+      "name": "Inox Archer",
+      "health": {
+        "1": 6,
+        "2": 8,
+        "3": 10
+      }
     },
     {
       "id": 7,
-      "name": "Inox Shaman"
+      "name": "Inox Shaman",
+      "health": {
+        "1": 6,
+        "2": 8,
+        "3": 10
+      }
     },
     {
       "id": 8,
-      "name": "Vermling Scout"
+      "name": "Vermling Scout",
+      "health": {
+        "1": 6,
+        "2": 8,
+        "3": 10
+      }
     },
     {
       "id": 9,
-      "name": "Vermling Shaman"
+      "name": "Vermling Shaman",
+      "health": {
+        "1": 6,
+        "2": 8,
+        "3": 10
+      }
     },
     {
       "id": 10,
-      "name": "Living Bones"
+      "name": "Living Bones",
+      "health": {
+        "1": 6,
+        "2": 8,
+        "3": 10
+      }
     },
     {
       "id": 11,

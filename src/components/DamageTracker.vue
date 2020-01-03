@@ -51,11 +51,13 @@ export default class DamageTracker extends Vue {
   damage() {
     this.foe.suffer(1).then(death => {
       if (death) this.$emit('death')
+      this.$store.commit('addDamage')
     })
   }
 
   heal() {
     this.foe.heal(1)
+    this.$store.commit('addHeal')
   }
 
   addCondition(condition: string) {

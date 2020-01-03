@@ -1,5 +1,11 @@
 <template>
   <section class="damage-manager container mx-auto px-24 flex flex-col flex-no-wrap">
+    <aside class="current-lvl fixed">
+      <i class="lvl-control hover:text-red-500 absolute fad fa-minus-circle" @click="reduceCurrentLvl"/>
+      <i class="absolute fad fa-trophy"/>
+      <h3 class="font-mono text-black font-bold">{{ currentLvl }}</h3>
+      <i class="lvl-control hover:text-red-500 absolute fad fa-plus-circle" @click="increaseCurrentLvl"/>
+    </aside>
     <aside class="turn-counter fixed">
       <i class="absolute fad fa-certificate"/>
       <h3 class="font-mono text-black font-bold">{{ currentTurn }}</h3>
@@ -11,7 +17,7 @@
       <button class="btn" @click="endOfTurn">
         <i class="text-4xl hover:text-gray-400 fad fa-sync-alt"/>
       </button>
-      <button class="btn">
+      <button class="btn" @click="showStats">
         <i class="text-4xl hover:text-gray-400 fad fa-chart-pie"/>
       </button>
     </header>
@@ -20,7 +26,10 @@
         <damage-tracker v-for="foe in foes" v-bind:key="foe.id" :foe="foe" @death="die(foe)"/>
       </transition-group>
       <transition name="slideUp">
-        <foe-creator class="fixed z-10" v-if="isCreatingFoe" @createdFoe="addedFoe"/>
+        <foe-creator class="fixed z-10" v-if="isCreatingFoe" :lvl="currentLvl" @createdFoe="addedFoe"/>
+      </transition>
+      <transition name="fadeInUp">
+        <Stats v-if="isShowingStats" />
       </transition>
     </main>
   </section>
@@ -30,18 +39,22 @@
 import { Component, Vue } from 'vue-property-decorator'
 import DamageTracker from '@/components/DamageTracker.vue'
 import FoeCreator from '@/components/FoeCreator.vue'
+import Stats from '@/components/Stats.vue'
 import Foe from '@/models/Foe'
 
 @Component({
   components: {
     DamageTracker,
     FoeCreator,
+    Stats,
   },
 })
 export default class DamageManager extends Vue {
   private foes: Foe[] = []
   private isCreatingFoe = false
   private currentTurn: number = 1
+  private currentLvl: number = 1
+  private isShowingStats = false
 
   addFoe(): void {
     this.isCreatingFoe = true
@@ -50,16 +63,34 @@ export default class DamageManager extends Vue {
   addedFoe(foe: Foe): void {
     this.foes.push(foe)
     this.isCreatingFoe = false
+    this.$store.commit('addFoe', foe)
   }
 
   die(deadFoe: Foe): void {
     const idx = this.foes.findIndex(foe => deadFoe.id === foe.id);
     this.foes.splice(idx, 1)
+    this.$store.commit('killFoe')
   }
 
   endOfTurn(): void {
-    this.foes.forEach(foe => foe.endOfTurn())
+    this.foes.forEach(foe => {
+      foe.endOfTurn()
+      if (foe.health <= 0) this.die(foe)
+    })
     this.currentTurn++
+  }
+
+  reduceCurrentLvl(): void {
+    this.currentLvl--
+    if (this.currentLvl < 1) this.currentLvl = 1
+  }
+
+  increaseCurrentLvl(): void {
+    this.currentLvl++
+  }
+
+  showStats(): void {
+    this.isShowingStats = true
   }
 }
 </script>
@@ -95,6 +126,37 @@ export default class DamageManager extends Vue {
   .fadeInUp-enter, .fadeInUp-leave-to /* .fade-leave-active below version 2.1.8 */ {
     transform: translateY(50px);
     opacity: 0;
+  }
+
+  .current-lvl {
+    width: 12rem;
+    text-align: center;
+    top: 5.6rem;
+    left: 4rem;
+
+    & i {
+      font-size: 10rem;
+    
+      &.lvl-control {
+        top: 2rem;
+        font-size: 4rem;
+
+        &:first-of-type {
+          left: 0;
+        }
+
+        &:last-of-type {
+          right: -11rem;
+        }
+      }
+    }
+
+    & h3 {
+      position: relative;
+      font-size: 4rem;
+      left: 5.6rem;
+      top: 1rem;
+    }
   }
 
   .turn-counter {
